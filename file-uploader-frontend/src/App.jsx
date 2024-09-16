@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./App.css"
+import { Check, X } from "react-feather"
 
 function App() {
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL;
   const [images, setImages] = useState([]);
+  const [newFolder, setNewFolder] = useState(false);
 
   useEffect(() => {
     async function getUser() {
@@ -31,7 +33,7 @@ function App() {
 
 
     getUser();
-    getFolder();
+    // getFolder();
   }, [API_URL, navigate]);
 
   function handleLogout() {
@@ -73,17 +75,28 @@ function App() {
       <div className="grid p-4">
         <div className="grid grid-cols-5">
           <div className="col-span-1">
-          <h1 className="text-4xl font-bold">File Uploader</h1>
+            <h1 className="text-4xl font-bold">File Uploader</h1>
           </div>
           <div className="grid col-span-4">
             <button className="justify-self-end" onClick={handleLogout}>logout</button>
           </div>
         </div>
-      
+
 
         <div className="grid grid-cols-5">
           <div className="cols-span-1">
-            
+            <button className="border-2 border-black"
+              onClick={() => setNewFolder(!newFolder)}>New Folder</button>
+            {
+              newFolder &&
+              <form className="flex border-2 border-black justify-between">
+                <input type="text" className="flex-auto border-2 border-black"/>
+                <div>
+                  <button><Check /></button>
+                  <button><X /></button>
+                </div>
+              </form>
+            }
           </div>
           <div className="col-span-4">
             <form onSubmit={handleSubmit} encType="multipart/form-data">
